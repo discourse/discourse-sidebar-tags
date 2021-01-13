@@ -16,6 +16,7 @@ function alphaId(a, b) {
 export default {
   setupComponent(attrs, component) {
     component.set("hideSidebar", true);
+    document.querySelector(".topic-list").classList.add("with-sidebar");
 
     if (!this.site.mobileView) {
       withPluginApi("0.11", (api) => {
@@ -50,6 +51,9 @@ export default {
                     foundTags = categoryId.tags.sort(alphaId);
                   } else {
                     // if a category doesn't have a tag list, don't show tags
+                    document
+                      .querySelector(".topic-list")
+                      .classList.remove("with-sidebar");
                     return;
                   }
                 } else {
@@ -65,16 +69,10 @@ export default {
                   )
                 ) {
                   component.set("tagList", foundTags);
-                  document
-                    .querySelector(".topic-list")
-                    .classList.add("with-sidebar");
                 }
               });
             } else {
               component.set("discoveryList", false);
-              document
-                .querySelector(".topic-list")
-                .classList.remove("with-sidebar");
             }
           }
         });
