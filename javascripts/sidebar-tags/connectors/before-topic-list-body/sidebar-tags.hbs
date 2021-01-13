@@ -1,0 +1,14 @@
+{{#unless site.mobileView}}
+  {{#if discoveryList}}
+    {{#unless hideSidebar}}
+      <div class="discourse-sidebar-tags">
+        <div class="sidebar-tags-list">
+          <h3 class="tags-list-title">{{theme-i18n "tag_sidebar.title"}}</h3>
+            {{#each tagList as |t|}}
+                {{discourse-tag t.id}}
+            {{/each}}
+          </div>
+        </div>
+    {{/unless}}
+  {{/if}}
+{{/unless}}
