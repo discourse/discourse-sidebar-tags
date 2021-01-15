@@ -38,7 +38,7 @@ export default {
                 let tagsCategories = result.extras.categories;
                 let tagsAll = result.tags;
                 let foundTags;
-                console.log("ajax");
+
                 if (url.match(/^\/c\/(.*)/)) {
                   // if category
                   const controller = container.lookup(
