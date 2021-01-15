@@ -27,13 +27,18 @@ export default {
             if (this.discoveryList || url.match(tagRegex)) {
               // tag pages aren't discovery lists for some reason?
               // checking for discoveryList makes sure it's not loading on user profiles and other topic lists
-              component.set("discoveryList", true);
+
+              if (this.isDestroyed || this.isDestroying) {
+                return;
+              }
+
+              component.set("isDiscoveryList", true);
 
               ajax("/tags.json").then(function (result) {
                 let tagsCategories = result.extras.categories;
                 let tagsAll = result.tags;
                 let foundTags;
-
+                console.log("ajax");
                 if (url.match(/^\/c\/(.*)/)) {
                   // if category
                   const controller = container.lookup(
@@ -72,7 +77,7 @@ export default {
                 }
               });
             } else {
-              component.set("discoveryList", false);
+              component.set("isDiscoveryList", false);
             }
           }
         });
