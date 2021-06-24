@@ -34,11 +34,13 @@
       padding: 1em;
       border: 1px solid var(--primary-low);
       background: var(--primary-very-low);
+      border-radius: 2px;
       a {
-        display: block;
+        display: inline-block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        margin-bottom: 4px;
       }
     }
     tbody {
