@@ -13,6 +13,16 @@ function alphaId(a, b) {
   return 0;
 }
 
+function tagCount(a, b) {
+  if (a.count > b.count) {
+    return -1;
+  }
+  if (a.count < b.count) {
+    return 1;
+  }
+  return 0;
+}
+
 export default {
   setupComponent(attrs, component) {
     component.set("hideSidebar", true);
@@ -53,7 +63,11 @@ export default {
                     let categoryId = tagsCategories.find(
                       ({ id }) => id === category.id
                     );
-                    foundTags = categoryId.tags.sort(alphaId);
+                    if (settings.sort_by_popularity) {
+                      foundTags = categoryId.tags.sort(tagCount);
+                    } else {
+                      foundTags = categoryId.tags.sort(alphaId);
+                    }
                   } else {
                     // if a category doesn't have a tag list, don't show tags
                     document
@@ -64,7 +78,11 @@ export default {
                 } else {
                   // show tags on generic topic pages like latest, top, etc... also tag pages
                   component.set("hideSidebar", false);
-                  foundTags = tagsAll.sort(alphaId);
+                  if (settings.sort_by_popularity) {
+                    foundTags = tagsAll.sort(tagCount);
+                  } else {
+                    foundTags = tagsAll.sort(alphaId);
+                  }
                 }
 
                 if (
@@ -73,7 +91,7 @@ export default {
                     component.get("isDestroying")
                   )
                 ) {
-                  component.set("tagList", foundTags);
+                  component.set("tagList", foundTags.slice(0, settings.number_of_tags));
                 }
               });
             } else {

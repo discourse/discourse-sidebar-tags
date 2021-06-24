@@ -1,2 +1,12 @@
 enable_tag_cloud:
   default: true
+  description: Enable tags sidebar
+number_of_tags:
+  default: 50
+  min: 3
+  max: 200
+  description: Number of tags to display in sidebar
+sort_by_popularity:
+ default: false
+ type: bool
+ description: When checked tags are sorted by popularity
