@@ -1,7 +1,6 @@
-import { withPluginApi } from "discourse/lib/plugin-api";
 import { ajax } from "discourse/lib/ajax";
-
-const container = Discourse.__container__;
+import { withPluginApi } from "discourse/lib/plugin-api";
+import { getOwnerWithFallback } from "discourse-common/lib/get-owner";
 
 function alphaId(a, b) {
   if (a.id < b.id) {
@@ -51,7 +50,7 @@ export default {
 
                 if (url.match(/^\/c\/(.*)/)) {
                   // if category
-                  const controller = container.lookup(
+                  const controller = getOwnerWithFallback(this).lookup(
                     "controller:navigation/category"
                   );
                   let category = controller.get("category");
@@ -91,7 +90,10 @@ export default {
                     component.get("isDestroying")
                   )
                 ) {
-                  component.set("tagList", foundTags.slice(0, settings.number_of_tags));
+                  component.set(
+                    "tagList",
+                    foundTags.slice(0, settings.number_of_tags)
+                  );
                 }
               });
             } else {
