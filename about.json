@@ -1,7 +1,7 @@
 {
-  "name": "discourse-sidebar-tags",
-  "about_url": null,
-  "license_url": null,
+  "name": "Sidebar Tags",
+  "about_url": "https://meta.discourse.org/t/sidebar-tags/195106",
+  "license_url": "https://github.com/discourse/discourse-sidebar-tags/blob/main/LICENSE",
   "assets": {},
   "color_schemes": {},
   "component": true
