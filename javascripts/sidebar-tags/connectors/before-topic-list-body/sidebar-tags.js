@@ -1,6 +1,6 @@
 import { ajax } from "discourse/lib/ajax";
+import { getOwnerWithFallback } from "discourse/lib/get-owner";
 import { withPluginApi } from "discourse/lib/plugin-api";
-import { getOwnerWithFallback } from "discourse-common/lib/get-owner";
 
 function alphaId(a, b) {
   if (a.id < b.id) {
