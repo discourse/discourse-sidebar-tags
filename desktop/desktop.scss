@@ -13,17 +13,20 @@
     align-items: start;
     grid-template-rows: 50px auto;
     grid-template-columns: 75% 23%;
+
     @media screen and (max-width: 900px) {
       grid-template-columns: 82% 16%;
     }
     grid-template-areas:
       "head sidebar"
       "body sidebar";
+
     thead {
       grid-area: head;
       display: table;
       align-self: end;
     }
+
     > .discourse-sidebar-tags {
       box-sizing: border-box;
       overflow: hidden;
@@ -35,6 +38,7 @@
       border: 1px solid var(--primary-low);
       background: var(--primary-very-low);
       border-radius: 2px;
+
       a {
         display: inline-block;
         white-space: nowrap;
@@ -43,6 +47,7 @@
         margin-bottom: 4px;
       }
     }
+
     tbody {
       grid-area: body;
       display: table;
@@ -55,6 +60,7 @@
     // New topic notification needs to be narrower
     box-sizing: border-box;
     width: 75%;
+
     @media screen and (max-width: 900px) {
       width: 73%;
     }
