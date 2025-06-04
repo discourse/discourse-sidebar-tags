@@ -5,7 +5,7 @@
   }
 }
 
-@media screen and (min-width: 767px) {
+@media screen and (width >= 767px) {
   // ...how the sidebar at 767px
   #list-area > .contents > .topic-list.with-sidebar {
     display: grid;
@@ -14,7 +14,7 @@
     grid-template-rows: 50px auto;
     grid-template-columns: 75% 23%;
 
-    @media screen and (max-width: 900px) {
+    @media screen and (width <= 900px) {
       grid-template-columns: 82% 16%;
     }
     grid-template-areas:
@@ -61,7 +61,7 @@
     box-sizing: border-box;
     width: 75%;
 
-    @media screen and (max-width: 900px) {
+    @media screen and (width <= 900px) {
       width: 73%;
     }
   }

@@ -1,6 +1,10 @@
+import Component from "@ember/component";
+import { tagName } from "@ember-decorators/component";
+import discourseTag from "discourse/helpers/discourse-tag";
 import { ajax } from "discourse/lib/ajax";
 import { getOwnerWithFallback } from "discourse/lib/get-owner";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import { i18n } from "discourse-i18n";
 
 function alphaId(a, b) {
   if (a.id < b.id) {
@@ -11,7 +15,6 @@ function alphaId(a, b) {
   }
   return 0;
 }
-
 function tagCount(a, b) {
   if (a.count > b.count) {
     return -1;
@@ -22,16 +25,16 @@ function tagCount(a, b) {
   return 0;
 }
 
-export default {
-  setupComponent(attrs, component) {
-    component.set("hideSidebar", true);
+@tagName("")
+export default class SidebarTags extends Component {
+  init() {
+    super.init(...arguments);
+    this.set("hideSidebar", true);
     document.querySelector(".topic-list").classList.add("with-sidebar");
-
     if (!this.site.mobileView) {
       withPluginApi("0.11", (api) => {
         api.onPageChange((url) => {
           let tagRegex = /^\/tag[s]?\/(.*)/;
-
           if (settings.enable_tag_cloud) {
             if (this.discoveryList || url.match(tagRegex)) {
               // tag pages aren't discovery lists for some reason?
@@ -40,24 +43,20 @@ export default {
               if (this.isDestroyed || this.isDestroying) {
                 return;
               }
-
-              component.set("isDiscoveryList", true);
-
+              this.set("isDiscoveryList", true);
               ajax("/tags.json").then(function (result) {
                 let tagsCategories = result.extras.categories;
                 let tagsAll = result.tags;
                 let foundTags;
-
                 if (url.match(/^\/c\/(.*)/)) {
                   // if category
                   const controller = getOwnerWithFallback(this).lookup(
                     "controller:navigation/category"
                   );
                   let category = controller.get("category");
-                  component.set("category", category);
-
+                  this.set("category", category);
                   if (tagsCategories.find(({ id }) => id === category.id)) {
-                    component.set("hideSidebar", false);
+                    this.set("hideSidebar", false);
                     // if category has a tag list
                     let categoryId = tagsCategories.find(
                       ({ id }) => id === category.id
@@ -76,32 +75,45 @@ export default {
                   }
                 } else {
                   // show tags on generic topic pages like latest, top, etc... also tag pages
-                  component.set("hideSidebar", false);
+                  this.set("hideSidebar", false);
                   if (settings.sort_by_popularity) {
                     foundTags = tagsAll.sort(tagCount);
                   } else {
                     foundTags = tagsAll.sort(alphaId);
                   }
                 }
-
-                if (
-                  !(
-                    component.get("isDestroyed") ||
-                    component.get("isDestroying")
-                  )
-                ) {
-                  component.set(
+                if (!(this.get("isDestroyed") || this.get("isDestroying"))) {
+                  this.set(
                     "tagList",
                     foundTags.slice(0, settings.number_of_tags)
                   );
                 }
               });
             } else {
-              component.set("isDiscoveryList", false);
+              this.set("isDiscoveryList", false);
             }
           }
         });
       });
     }
-  },
-};
+  }
+
+  <template>
+    {{#unless this.site.mobileView}}
+      {{#if this.isDiscoveryList}}
+        {{#unless this.hideSidebar}}
+          <div class="discourse-sidebar-tags">
+            <div class="sidebar-tags-list">
+              <h3 class="tags-list-title">{{i18n
+                  (themePrefix "tag_sidebar.title")
+                }}</h3>
+              {{#each this.tagList as |t|}}
+                {{discourseTag t.id style="box"}}
+              {{/each}}
+            </div>
+          </div>
+        {{/unless}}
+      {{/if}}
+    {{/unless}}
+  </template>
+}
