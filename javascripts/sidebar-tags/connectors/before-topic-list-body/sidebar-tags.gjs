@@ -32,7 +32,7 @@ export default class SidebarTags extends Component {
     this.set("hideSidebar", true);
     document.querySelector(".topic-list").classList.add("with-sidebar");
     if (!this.site.mobileView) {
-      withPluginApi("0.11", (api) => {
+      withPluginApi((api) => {
         api.onPageChange((url) => {
           let tagRegex = /^\/tag[s]?\/(.*)/;
           if (settings.enable_tag_cloud) {
